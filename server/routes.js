@@ -1,10 +1,10 @@
 const express = require('express')
-// Controllers
-const thermostatController = require('./controllers/thermostat')
+//Routers
+const thermostatRouter = require('./routers/thermostat')
 
 const router = express.Router()
 
 // Thermostat Data Router
-router.get('/thermostat', thermostatController.getThermostatData)
+router.use('/thermostat', thermostatRouter)
 
 module.exports = router

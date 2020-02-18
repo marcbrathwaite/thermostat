@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Components
 import Summary from './Summary'
@@ -14,6 +15,13 @@ const ThermostatData = () => {
   const [thermostatData, setThermostatData] = useState({
     status: 'UNINIT'
   })
+
+  // loading state boolean
+  const isLoading = ['UNINIT', 'LOADING'].includes(thermostatData.status)
+  // error state boolean
+  const isError = ['ERROR'].includes(thermostatData.status)
+  // success state boolean
+  const isSuccess = ['SUCCESS'].includes(thermostatData.status)
 
   useEffect(() => {
     const asyncfn = async () => {
@@ -37,12 +45,21 @@ const ThermostatData = () => {
       asyncfn()
     }
   }, [thermostatManager, thermostatData.status])
-  console.log('thermostatData', thermostatData)
+
+  if (isLoading) {
+    return <CircularProgress />
+  }
+
+  if (isError) {
+    return <div>ERROR</div>
+  }
+
+  const { graphData, summaryData, dateRange } = thermostatData.value
 
   return (
     <div>
-      <Summary />
-      <Graph />
+      <Summary data={summaryData} dateRange={dateRange} />
+      <Graph data={graphData} dateRange={dateRange} />
     </div>
   )
 }

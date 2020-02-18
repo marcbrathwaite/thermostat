@@ -124,7 +124,7 @@ const ThermostatStatus = ({ thermostat, fan, outsideTemp, tempSetPoint }) => {
         </Paper>
         <Paper className={classes.readingPaper}>
           <Typography variant="h6" component="p">
-            Indoor Temp:
+            Ambient Temp:
           </Typography>
           <Box className={classes.valueContainer}>
             <Typography>20 C</Typography>

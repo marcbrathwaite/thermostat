@@ -7,8 +7,7 @@ import ThermostatManager from '../../../managers/ThermostatManager'
 const ThermostatStatusContainer = () => {
   const thermostatManager = new ThermostatManager()
   const [outsideTemp, setOutsideTemp] = useState({
-    status: 'UNINIT',
-    value: null
+    status: 'UNINIT'
   })
   // state for the thermostat status
   const [thermostatStatus, setThermostatStatus] = useState('off')
@@ -29,7 +28,7 @@ const ThermostatStatusContainer = () => {
           value: data.temp
         })
       } catch (e) {
-        setOutsideTemp({ status: 'ERROR' })
+        setOutsideTemp({ status: 'ERROR', error: e })
       }
     }
     if (outsideTemp.status === 'UNINIT') {

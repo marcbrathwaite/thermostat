@@ -7,20 +7,21 @@ import ThermostatStatus from './ThermostatStatus'
 import ThermostatData from './ThermostatData'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
+  container: {
+    margin: theme.spacing(5, 0),
+    '& > *': {
+      marginBottom: theme.spacing(7)
+    }
   }
 }))
 
 const ControlPanel = () => {
   const classes = useStyles()
   return (
-    <div className={classes.root}>
-      <Container>
-        <ThermostatStatus />
-        <ThermostatData />
-      </Container>
-    </div>
+    <Container className={classes.container} maxWidth="xl">
+      <ThermostatStatus />
+      <ThermostatData />
+    </Container>
   )
 }
 

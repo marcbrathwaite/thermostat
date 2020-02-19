@@ -4,6 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 // Components
 import Summary from './Summary'
 import Graph from './Graph'
+import Heading from '../../Common/Heading'
 
 // Managers
 import ThermostatManager from '../../../managers/ThermostatManager'
@@ -58,6 +59,7 @@ const ThermostatData = () => {
 
   return (
     <div>
+      <Heading headingText="Thermostat Data" />
       <Summary data={summaryData} dateRange={dateRange} />
       <Graph data={graphData} dateRange={dateRange} />
     </div>

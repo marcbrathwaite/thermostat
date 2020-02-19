@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:server": "nodemon --exec \"node ./server/server.js\" --ignore ui/",
-    "dev:client": "yarn --cwd ./ui/ start",
+    "dev:client": "npm run start --prefix ui",
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\""
   },
   "repository": {

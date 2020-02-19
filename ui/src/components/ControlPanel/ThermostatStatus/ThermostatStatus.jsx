@@ -1,69 +1,48 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import Skeleton from '@material-ui/lab/Skeleton'
 // Components
-import StatusRadioGroup from './StatusRadioGroup'
-import FanRadioGroup from './FanRadioGroup'
+import StatusCard from './StatusCard'
+import SetTempCard from './SetTempCard'
+import DisplayTempCard from './DisplayTempCard'
+import Heading from '../../Common/Heading'
 
 // define styles
 const useStyles = makeStyles(theme => ({
   statusContainer: {
     display: 'flex',
     marginBottom: theme.spacing(3),
-    justifyContent: 'center',
-    '& > div:first-child': {
-      marginRight: theme.spacing(5)
+    justifyContent: 'space-between',
+    '& > *': {
+      width: `calc(33.33% - ${theme.spacing(2)}px)`
+    },
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      '& > *': {
+        width: '100%',
+        marginBottom: theme.spacing(2),
+        '&:last-child': {
+          marginBottom: '0'
+        }
+      }
     }
-  },
-  statusPaper: {
-    width: '10%',
-    padding: theme.spacing(2),
-    textAlign: 'center'
   },
   readingContainer: {
     display: 'flex',
-    marginBottom: theme.spacing(3),
-    justifyContent: 'center',
-    '& > div:last-child': {
-      marginRight: theme.spacing(0)
+    justifyContent: 'space-around',
+    '& > *': {
+      width: `calc(33.33% - ${theme.spacing(2)}px)`
+    },
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      '& > *': {
+        width: '100%',
+        marginBottom: theme.spacing(2),
+        '&:last-child': {
+          marginBottom: '0'
+        }
+      }
     }
-  },
-  readingPaper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '25%',
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    marginRight: theme.spacing(5)
-  },
-  setTempContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  arrowContainer: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  arrow: {
-    cursor: 'pointer',
-    fontSize: '2rem'
-  },
-  valueContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: '1 1 auto'
-  },
-  controlPaper: {
-    width: '25%',
-    padding: theme.spacing(2),
-    textAlign: 'center'
   }
 }))
 
@@ -77,69 +56,60 @@ const ThermostatStatus = ({ thermostat, fan, outsideTemp, tempSetPoint }) => {
   // success state boolean
   const isSuccess = ['SUCCESS'].includes(outsideTemp.status)
 
+  // status object for outside temp async call
+  const outsideTempStatus = {
+    isLoading,
+    isError,
+    isSuccess
+  }
+
+  const ambientTempStatus = {
+    isLoading: false,
+    isError: false,
+    isSuccess: true
+  }
+
   return (
-    <>
+    <Box>
+      <Heading headingText="Thermostat Status" />
       <Box className={classes.statusContainer}>
-        <Paper className={classes.statusPaper}>
-          <Typography variant="h6" component="p">
-            Status:
-          </Typography>
-          <Typography>{thermostat.value}</Typography>
-        </Paper>
-        <Paper className={classes.statusPaper}>
-          <Typography variant="h6" component="p">
-            Fan:
-          </Typography>
-          <Typography>{fan.value}</Typography>
-        </Paper>
+        <StatusCard
+          title="Thermostat"
+          value={thermostat.value}
+          handler={thermostat.handler}
+          options={thermostat.options}
+          a11yText="thermostat control"
+          radioName="thermostat"
+        />
+        <SetTempCard
+          title="Set Temp"
+          value={tempSetPoint.value}
+          thermostatStatus={thermostat.value}
+          increaseHandler={tempSetPoint.increase}
+          decreaseHandler={tempSetPoint.decrease}
+        />
+        <StatusCard
+          title="Fan"
+          value={fan.value}
+          handler={fan.handler}
+          options={fan.options}
+          a11yText="fan control"
+          radioName="fan"
+        />
       </Box>
       <Box className={classes.readingContainer}>
-        <Paper className={classes.readingPaper}>
-          <Typography variant="h6" component="p">
-            Outside Temp:
-          </Typography>
-          <Box className={classes.valueContainer}>
-            {isLoading && <Skeleton variant="circle" width={40} height={40} />}
-            {isSuccess && <Typography>{`${outsideTemp.value} C`}</Typography>}
-            {isError && <Typography>N/A</Typography>}
-          </Box>
-        </Paper>
-        <Paper className={classes.readingPaper}>
-          <Typography variant="h6" component="p">
-            Set Temp:
-          </Typography>
-          <Box className={classes.setTempContainer}>
-            <Box className={classes.arrowContainer}>
-              <ArrowDropUpIcon
-                className={classes.arrow}
-                onClick={tempSetPoint.increase}
-              />
-              <ArrowDropDownIcon
-                className={classes.arrow}
-                onClick={tempSetPoint.decrease}
-              />
-            </Box>
-            <Typography>{`${tempSetPoint.value} C`}</Typography>
-          </Box>
-        </Paper>
-        <Paper className={classes.readingPaper}>
-          <Typography variant="h6" component="p">
-            Ambient Temp:
-          </Typography>
-          <Box className={classes.valueContainer}>
-            <Typography>20 C</Typography>
-          </Box>
-        </Paper>
+        <DisplayTempCard
+          title="Outside Temp."
+          value={outsideTemp.value}
+          status={outsideTempStatus}
+        />
+        <DisplayTempCard
+          title="Ambient Temp."
+          value={20}
+          status={ambientTempStatus}
+        />
       </Box>
-      <Box className={classes.statusContainer}>
-        <Paper className={classes.controlPaper}>
-          <StatusRadioGroup thermostat={thermostat} />
-        </Paper>
-        <Paper className={classes.controlPaper}>
-          <FanRadioGroup fan={fan} />
-        </Paper>
-      </Box>
-    </>
+    </Box>
   )
 }
 

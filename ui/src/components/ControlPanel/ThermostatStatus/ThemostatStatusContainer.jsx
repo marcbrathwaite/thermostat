@@ -20,9 +20,7 @@ const ThermostatStatusContainer = () => {
     const asynFn = async () => {
       try {
         setOutsideTemp({ status: 'LOADING' })
-        // const data = await thermostatManager.getCurrentTemp('Toronto')
-        // TODO: remove
-        const data = { temp: 15 }
+        const data = await thermostatManager.getCurrentTemp('Toronto')
         setOutsideTemp({
           status: 'SUCCESS',
           value: data.temp
@@ -38,12 +36,36 @@ const ThermostatStatusContainer = () => {
 
   const thermostat = {
     value: thermostatStatus,
-    handler: setThermostatStatus
+    handler: setThermostatStatus,
+    options: [
+      {
+        label: 'Off',
+        value: 'off'
+      },
+      {
+        label: 'Heat',
+        value: 'heat'
+      },
+      {
+        label: 'Cool',
+        value: 'cool'
+      }
+    ]
   }
 
   const fan = {
     value: fanStatus,
-    handler: setFanStatus
+    handler: setFanStatus,
+    options: [
+      {
+        label: 'Auto',
+        value: 'auto'
+      },
+      {
+        label: 'On',
+        value: 'on'
+      }
+    ]
   }
 
   const tempSetPoint = {

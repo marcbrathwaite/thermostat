@@ -5,12 +5,9 @@ import { BrowserRouter as Router } from 'react-router-dom'
 // Components
 import App from './components/App'
 
-// Routes
-import getUIRoutes from './routes'
-
 ReactDOM.render(
   <Router>
-    <App>{getUIRoutes()}</App>
+    <App />
   </Router>,
   document.getElementById('root')
 )

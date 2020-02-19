@@ -10,6 +10,23 @@ import {
   Legend
 } from 'recharts'
 
+const CustomizedAxisTick = ({ x, y, payload }) => {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill="#666"
+        transform="rotate(-35)"
+      >
+        {payload.value}
+      </text>
+    </g>
+  )
+}
+
 const Graph = ({ data, dateRange }) => {
   console.log('data', data)
   // TODO: move to manager
@@ -26,12 +43,15 @@ const Graph = ({ data, dateRange }) => {
     }
     points.push(point)
   }
-  console.log(points)
   return (
     <ResponsiveContainer width="100%" height={500}>
       <LineChart data={points}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="x" />
+        <XAxis
+          dataKey="x"
+          interval="preserveStartEnd"
+          tick={<CustomizedAxisTick />}
+        />
         <YAxis />
         <Tooltip />
         <Legend />

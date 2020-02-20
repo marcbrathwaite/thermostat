@@ -1,4 +1,8 @@
 import ApiClient from '../services/ApiClient'
+import randomColor from 'randomcolor'
+
+// helpers
+import { formatGraphData } from './helpers/formatGraphData'
 
 class ThermostatManager {
   constructor() {
@@ -7,27 +11,29 @@ class ThermostatManager {
 
   async getThermostatData() {
     const data = await this._apiClient.getThermostatData()
-    // separate graph data and summary info
+
+    // Generate points
+    const points = formatGraphData(data.summary)
+    // separate graph data series and summary info
     const dataObj = data.summary.reduce(
       (acc, curr) => {
-        const { id, name, unit, graph_data, avg, min, max } = curr
-        acc.graphData.push({
+        const { id, name, avg, min, max } = curr
+        acc.dataSeries.push({
           id,
-          name,
-          unit,
-          graph_data
+          stroke: randomColor()
         })
-        acc.summaryData.push({ id, name, unit, avg, min, max })
+        acc.summaryData.push({ id, name, avg, min, max })
         return acc
       },
       {
-        graphData: [],
+        dataSeries: [],
         summaryData: []
       }
     )
     return {
       dateRange: data.dateRange,
-      ...dataObj
+      ...dataObj,
+      points
     }
   }
 

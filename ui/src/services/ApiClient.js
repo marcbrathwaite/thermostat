@@ -1,7 +1,9 @@
 import axios from 'axios'
-
 // Models
 import ThermostatData from '../models/ThermostatData'
+// Errors
+import GetThermostatDataError from './errors/GetThermostatDataError'
+import GetCurrentTempError from './errors/GetCurrentTempError'
 
 class ApiClient {
   // method for retrieving thermostat data
@@ -10,7 +12,7 @@ class ApiClient {
       const res = await axios.get('api/v1/thermostat/data')
       return new ThermostatData(res.data)
     } catch (e) {
-      throw e
+      throw new GetThermostatDataError(e.message)
     }
   }
 
@@ -21,7 +23,7 @@ class ApiClient {
       })
       return res.data
     } catch (e) {
-      throw e
+      throw new GetCurrentTempError(e.message)
     }
   }
 }

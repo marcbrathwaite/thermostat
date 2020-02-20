@@ -5,7 +5,6 @@ import AppBar from './AppBar'
 import ControlPanel from './ControlPanel'
 
 const App = ({ children }) => {
-  // TODO: CSS reset
 
   return (
     <>
@@ -16,5 +15,4 @@ const App = ({ children }) => {
   )
 }
 
-// TODO: proptypes
 export default App

@@ -19,7 +19,7 @@ const CustomizedAxisTick = ({ x, y, payload }) => {
         dy={16}
         textAnchor="end"
         fill="#666"
-        transform="rotate(-35)"
+        transform="rotate(-60)"
       >
         {payload.value}
       </text>
@@ -27,25 +27,13 @@ const CustomizedAxisTick = ({ x, y, payload }) => {
   )
 }
 
-const Graph = ({ data, dateRange }) => {
-  console.log('data', data)
-  // TODO: move to manager
-  const points = []
-  const { graph_data } = data[0]
-  for (let i = 0; i < graph_data.length; i++) {
-    const point = {
-      x: graph_data[i].x,
-      [data[0].id]: graph_data[i].actual
-    }
-    for (let j = 1; j < data.length; j++) {
-      const { graph_data } = data[j]
-      point[data[j].id] = graph_data[i].actual
-    }
-    points.push(point)
-  }
+const Graph = ({ dataSeries, points }) => {
+
   return (
     <ResponsiveContainer width="100%" height={500}>
-      <LineChart data={points}>
+      <LineChart data={points} margin={{
+          bottom: 200
+        }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="x"
@@ -54,10 +42,10 @@ const Graph = ({ data, dateRange }) => {
         />
         <YAxis />
         <Tooltip />
-        <Legend />
-        {data.map(d => {
+        <Legend verticalAlign="top" height={36}/>
+        {dataSeries.map((d) => {
           return (
-            <Line key={d.id} type="monotone" dataKey={d.id} stroke="#8884d8" />
+            <Line key={d.id} type="monotone" dot={false} dataKey={d.id} stroke={d.stroke} />
           )
         })}
       </LineChart>

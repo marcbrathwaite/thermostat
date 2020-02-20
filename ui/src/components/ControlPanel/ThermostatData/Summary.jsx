@@ -28,7 +28,10 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow)
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+  headingContainer: {
+    padding: theme.spacing(2, 0)
+  },
   tableContainer: {
     maxWidth: '700px'
   },
@@ -40,7 +43,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center'
   }
-})
+}))
 
 const Summary = ({ data, dateRange }) => {
   const classes = useStyles()
@@ -48,7 +51,9 @@ const Summary = ({ data, dateRange }) => {
   return (
     <Box className={classes.summaryContainer}>
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Typography align="left">{dateRange}</Typography>
+        <Typography align="left" className={classes.headingContainer}>
+         { `Summary of data for period: ${dateRange}`}
+        </Typography>
         <Table className={classes.table} aria-label="summary table">
           <TableHead>
             <TableRow>
